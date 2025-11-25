@@ -1,20 +1,14 @@
-Project 2 Verification: Plotting Results
+#### Project 2 Verification: Plotting Results
 
 Goal: Visually verify the success of the rescaling pipeline by generating a comparative plot. This script reads the original data, the reference target, and your final output, plotting them together to confirm that the output matches the target distribution.
 
-🚀 Features
 
-Smart Parsing: Automatically handles BED files with inconsistent column formatting (e.g., read names in column 3 vs. 4).
 
-Multi-Format Support: Reads both plain text histograms (.hist) and compressed BED files (.bed.gz).
 
-Publication-Ready Visualization: Generates a high-quality PNG graph with proper labels, legends, and styling.
 
-📂 File Structure
+#### file
 
-File
 
-Description
 
 plot_results.py
 
@@ -36,7 +30,7 @@ final_result_graph.png
 
 Output: The resulting visualization image.
 
-🛠 Prerequisites
+#### Prerequisites
 
 You need Python 3 and the matplotlib library.
 
@@ -45,17 +39,19 @@ To install the required library:
 pip install matplotlib
 
 
-⚙️ Usage
+#### Usage
 
 Ensure files are present:
 Make sure plot_results.py is in the same folder as your three data files (reference.hist, query.bed.gz, and query.rescaled.bed).
 
 Run the script:
 
+bash
+```
 python3 plot_results.py
+```
 
-
-📊 Understanding the Output
+#### Understanding the Output
 
 The script generates an image named final_result_graph.png.
 
