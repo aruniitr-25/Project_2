@@ -1,74 +1,70 @@
+Project 2 Verification: Plotting Results
 
+Goal: Visually verify the success of the rescaling pipeline by generating a comparative plot. This script reads the original data, the reference target, and your final output, plotting them together to confirm that the output matches the target distribution.
 
------
+🚀 Features
 
-#  Fragment Length Distribution Rescaler
+Smart Parsing: Automatically handles BED files with inconsistent column formatting (e.g., read names in column 3 vs. 4).
 
-This Python script is designed for visualizing and comparing **fragment length distributions** in genomics data. It reads distributions from three files—a **reference histogram**, an **original query BED file**, and a **rescaled output BED file**—calculates the normalized frequencies for each, and generates a comparative plot using `matplotlib`.
+Multi-Format Support: Reads both plain text histograms (.hist) and compressed BED files (.bed.gz).
 
-The core utility lies in the `get_frequencies` function, which can interpret both pre-normalized histogram files and raw genomic interval files (like BED) to extract the distribution of fragment lengths. It implements a **"smart counting" logic** to determine the fragment length from either the 4th or 5th column of a standard BED file.
+Publication-Ready Visualization: Generates a high-quality PNG graph with proper labels, legends, and styling.
 
-##  Features
+📂 File Structure
 
-  * **Multi-File Input:** Compares three different fragment length distributions: Reference, Original Query, and Rescaled Output.
-  * **Flexible Data Reading:** Automatically handles both plain text histogram files and gzipped BED files.
-  * **Smart Length Extraction:** Extracts fragment length from the 4th or 5th column of a BED file, providing robustness for different data conventions.
-  * **Distribution Normalization:** Calculates normalized frequencies (probabilities) for raw BED files.
-  * **High-Quality Visualization:** Generates a comparative plot using `matplotlib` to visually assess the quality of the rescaling process.
+File
 
-##  Configuration & Requirements
+Description
 
-### File Configuration (Within the script)
+plot_results.py
 
-The script relies on three specific files based on the internal configuration:
+The Python script that calculates frequencies and generates the plot.
 
-| Variable | Default Value | Format | Description |
-| :--- | :--- | :--- | :--- |
-| `REF_FILE` | `"reference.hist"` | Text (`Length Probability`) | The target distribution (already normalized). |
-| `QUERY_FILE` | `"query.bed.gz"` | Gzip/BED | The original, un-rescaled genomic data. |
-| `OUTPUT_FILE` | `"query.rescaled.bed"` | Text/BED | The output of the rescaling process. |
+reference.hist
 
-### Requirements
+Input: The target distribution (Green Line).
 
-This script requires the following Python libraries:
+query.bed.gz
 
-```bash
+Input: The original noisy dataset (Purple Line).
+
+query.rescaled.bed
+
+Input: Your cleaned/filtered dataset (Blue Stars).
+
+final_result_graph.png
+
+Output: The resulting visualization image.
+
+🛠 Prerequisites
+
+You need Python 3 and the matplotlib library.
+
+To install the required library:
+
 pip install matplotlib
-pip install gzip  # (usually built-in)
-```
 
-##  Usage
 
-1.  **Ensure Files Exist:** Make sure the three configured input files (`reference.hist`, `query.bed.gz`, `query.rescaled.bed`) are present in the same directory as the script.
+⚙️ Usage
 
-2.  **Run the Script:**
+Ensure files are present:
+Make sure plot_results.py is in the same folder as your three data files (reference.hist, query.bed.gz, and query.rescaled.bed).
 
-    ```bash
-    python your_script_name.py
-    ```
+Run the script:
 
-3.  **Result:** The script will print status updates and save the final comparison chart as **`final_result_plot.png`**.
+python3 plot_results.py
 
-##  Plot Output Example
 
-The generated plot displays the three distributions:
+📊 Understanding the Output
 
-  * **Reference (Green Line):** The target distribution that the other files should ideally match.
-  * **Original Query (Purple Line):** The distribution before any rescaling or correction.
-  * **Rescaled Output (Blue Stars):** The distribution after processing, which should closely overlay the Reference distribution if the rescaling was successful.
+The script generates an image named final_result_graph.png.
 
-### Example Visualization
+<span style="color:green">Green Line (Reference):</span> This is the target "perfect" distribution.
 
-##  Core Logic: `get_frequencies`
+<span style="color:purple">Purple Line (Original Query):</span> This is your starting data. It likely has a large "junk" peak around fragment length ~50-80bp.
 
-The `get_frequencies` function is responsible for parsing the different file types:
+<span style="color:skyblue">Blue Stars (Rescaled Output):</span> This is your final processed data.
 
-1.  **Histogram Files (`.hist`):** Reads two columns (`Length` and `Probability`). The data is already normalized.
-2.  **BED Files (`.bed`/`.bed.gz`):**
-      * Iterates through lines, splitting by whitespace.
-      * Attempts to extract the fragment length (read length or insert size) from **column 4** (index 3) or **column 5** (index 4).
-      * Tallies the count for each length.
-      * **Normalizes** the counts by dividing by the total number of fragments read to get the final frequency distribution.
+Success Criteria: The blue stars should overlap the green line almost perfectly.
 
------
-
+Failure Criteria: If the blue stars still follow the purple line's "junk" peak, the filtering step in the main pipeline failed.
