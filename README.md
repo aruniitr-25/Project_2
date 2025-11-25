@@ -1,4 +1,4 @@
-Here is a copy-paste format README for your GitHub repository based on the provided Python script.
+
 
 -----
 
